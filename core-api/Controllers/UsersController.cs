@@ -1,4 +1,6 @@
-﻿using core_api.Services.Interfaces;
+﻿using core_api.Models;
+using core_api.Services.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_api.Controllers
@@ -16,19 +18,22 @@ namespace core_api.Controllers
         [HttpGet("api/users")]
         public IActionResult GetUsers()
         {
-            return Ok(_usersService.GetUsers());
+            var users = _usersService.GetUsers();
+            return users is not null ? Ok(users) : NotFound();
         }
 
         [HttpGet("api/users/{id}")]
         public IActionResult GetUserById(int id)
         {
-            return Ok(_usersService.GetUserById(id));
+            var user = _usersService.GetUserById(id);
+            return user is not null ? Ok(user) : NotFound();
         }
 
         [HttpPost("api/users")]
-        public IActionResult CreateUser()
+        public IActionResult CreateUser([FromBody] User user)
         {
-            return Ok(new { Message = "Create a new user" });
+            _usersService.CreateUser(user);
+            return Created("api/users/{id}", user);
         }
 
         [HttpPut("api/users/{id}")]

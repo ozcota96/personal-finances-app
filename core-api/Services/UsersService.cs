@@ -5,33 +5,38 @@ namespace core_api.Services
 {
     public class UsersService : IUsersService
     {
+        private readonly List<User> _users = [];
+
         public UsersService()
         {
-            
+            InitializeUsers(_users);
         }
 
         public IList<User> GetUsers()
         {
-            var users = InitializeUsers();
-            return users;
+            return _users;
         }
 
         public User? GetUserById(int id)
         {
-            var users = InitializeUsers();
-            return users.FirstOrDefault(u => u.Id == id);
+            return _users.FirstOrDefault(u => u.Id == id);
         }
-        
-        // This method can be used to initialize users from a database or other source in the future
-        private List<User> InitializeUsers()
+
+        public User? CreateUser(User user)
         {
-            var users = new List<User>
-            {
+            _users.Add(user);
+            return user;
+        }
+
+        // This method can be used to initialize users from a database or other source in the future
+        private static void InitializeUsers(List<User> users)
+        {
+            users.AddRange(
+            [
                 new() { Id = 1, FirstName = "Peter", LastName = "Parker", Email = "pparker@example.com", PasswordHash = "123123jljhfljkfh" },
                 new() { Id = 2, FirstName = "Tony", LastName = "Stark", Email = "tstark@example.com", PasswordHash = "123123jljhfljkfh" },
                 new() { Id = 3, FirstName = "Steve", LastName = "Rogers", Email = "srogers@example.com", PasswordHash = "123123jljhfljkfh" }
-            };
-            return users;
+            ]);
         }
     }
 }

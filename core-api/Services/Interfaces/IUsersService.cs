@@ -6,5 +6,6 @@ namespace core_api.Services.Interfaces
     {
         IList<User> GetUsers();
         User? GetUserById(int id);
+        User? CreateUser(User user);
     }
 }
