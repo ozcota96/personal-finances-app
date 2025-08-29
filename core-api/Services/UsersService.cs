@@ -12,17 +12,17 @@ namespace core_api.Services
             InitializeUsers(_users);
         }
 
-        public IList<User> GetUsers()
+        public async Task<IList<User>> GetUsers()
         {
             return _users;
         }
 
-        public User? GetUserById(int id)
+        public async Task<User?> GetUserById(int id)
         {
             return _users.FirstOrDefault(u => u.Id == id);
         }
 
-        public User? CreateUser(User user)
+        public async Task<User?> CreateUser(User user)
         {
             _users.Add(user);
             return user;

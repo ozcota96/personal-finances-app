@@ -11,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IUsersService, UsersService>();
+builder.Services.AddSingleton<IAccountsService, AccountsService>();
+builder.Services.AddSingleton<ITransactionsService, TransactionsService>();
 
 var app = builder.Build();
 

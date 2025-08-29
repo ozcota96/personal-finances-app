@@ -4,8 +4,8 @@ namespace core_api.Services.Interfaces
 {
     public interface IUsersService
     {
-        IList<User> GetUsers();
-        User? GetUserById(int id);
-        User? CreateUser(User user);
+        Task<IList<User>> GetUsers();
+        Task<User?> GetUserById(int id);
+        Task<User?> CreateUser(User user);
     }
 }
