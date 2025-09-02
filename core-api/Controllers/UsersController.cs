@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace core_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/users")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -16,33 +16,33 @@ namespace core_api.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetUsers()
+        public async Task<IActionResult> GetUsers()
         {
-            var users = _usersService.GetUsers();
+            var users = await _usersService.GetUsers();
             return users is not null ? Ok(users) : NotFound();
         }
 
-        [HttpGet("/{id}")]
-        public IActionResult GetUserById(int id)
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
         {
-            var user = _usersService.GetUserById(id);
+            var user = await _usersService.GetUserById(id);
             return user is not null ? Ok(user) : NotFound();
         }
 
         [HttpPost]
-        public IActionResult CreateUser([FromBody] User user)
+        public async Task<IActionResult> CreateUser([FromBody] User user)
         {
-            _usersService.CreateUser(user);
+            await _usersService.CreateUser(user);
             return Created("api/users/{id}", user);
         }
 
-        [HttpPut("/{id}")]
+        [HttpPut("{id}")]
         public IActionResult UpdateUser(int id)
         {
             return Ok(new { Message = $"Update user with ID {id}" });
         }
 
-        [HttpDelete("/{id}")]
+        [HttpDelete("{id}")]
         public IActionResult DeleteUser(int id)
         {
             return Ok(new { Message = $"Delete user with ID {id}" });
