@@ -7,5 +7,6 @@ namespace core_api.Services.Interfaces
         Task<IList<User>> GetUsers();
         Task<User?> GetUserById(int id);
         Task<User?> CreateUser(User user);
+        Task<User?> Login(string email, string password);
     }
 }

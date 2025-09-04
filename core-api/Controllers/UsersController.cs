@@ -1,11 +1,12 @@
 ﻿using core_api.Models;
+using core_api.Models.Request;
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_api.Controllers
 {
-    [Route("api/users")]
     [ApiController]
+    [Route("api/users")]
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
@@ -29,9 +30,24 @@ namespace core_api.Controllers
             return user is not null ? Ok(user) : NotFound();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> CreateUser([FromBody] User user)
+        [HttpGet("login")]
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
+            var user = await _usersService.Login(loginDto.Email, loginDto.Password);
+            return user is not null ? Ok(user) : Unauthorized(new { Message = "Invalid email or password." });
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto userDto)
+        {
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+            var user = new User
+            {
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Email = userDto.Email,
+                PasswordHash = passwordHash
+            };
             await _usersService.CreateUser(user);
             return Created("api/users/{id}", user);
         }

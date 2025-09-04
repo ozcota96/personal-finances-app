@@ -24,8 +24,27 @@ namespace core_api.Services
             return _users.SingleOrDefault(u => u.Id == id);
         }
 
+        public async Task<User?> Login(string email, string password)
+        {
+            var user = _users.SingleOrDefault(u => u.Email == email);
+            if (user is null)
+            {
+                await Task.CompletedTask;  // placeholder until the asynchronous call exists
+                return null;
+            }
+            var isPasswordValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
+            await Task.CompletedTask;  // placeholder until the asynchronous call exists
+            if (!isPasswordValid)
+            {
+                return null;
+            }
+            return user;
+        }
+
         public async Task<User?> CreateUser(User user)
         {
+            user.Id = _users.Count;
+            user.Id++; // simple auto-increment simulation
             await Task.CompletedTask;  // placeholder until the asynchronous call exists
             _users.Add(user);
             return user;
