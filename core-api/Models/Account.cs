@@ -10,7 +10,7 @@
         public DateTime UpdatedAt { get; set; }
         public int UpdatedBy { get; set; }
         public int UserId { get; set; }
-        public virtual User User { get; set; }
-        public virtual IList<Transaction> Transactions { get; set; } = [];
+        public virtual User User { get; set; } = null!;
+        public virtual IList<Movement> Movements { get; set; } = [];
     }
 }

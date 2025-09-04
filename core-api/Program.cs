@@ -3,6 +3,19 @@ using core_api.Services.Interfaces;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// CORS policy
+var allowFrontend = "_allowFrontend";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: allowFrontend,
+        policy =>
+        {
+            policy.WithOrigins("http://localhost:5173")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 // Add services to the container.
 
 builder.Services.AddControllers();
@@ -12,7 +25,7 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddSingleton<IUsersService, UsersService>();
 builder.Services.AddSingleton<IAccountsService, AccountsService>();
-builder.Services.AddSingleton<ITransactionsService, TransactionsService>();
+builder.Services.AddSingleton<IMovementsService, MovementsService>();
 
 var app = builder.Build();
 
@@ -24,6 +37,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(allowFrontend);
 
 app.UseAuthorization();
 

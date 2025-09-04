@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace core_api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/accounts")]
     [ApiController]
     public class AccountsController : ControllerBase
     {
@@ -21,7 +21,7 @@ namespace core_api.Controllers
             return accounts is not null ? Ok(accounts) : NotFound();
         }
 
-        [HttpGet("/{id}")]
+        [HttpGet("{id}")]
         public async Task<IActionResult> GetAccountById(int id)
         {
             var account = await _accountService.GetAccountById(id);

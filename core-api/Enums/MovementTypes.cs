@@ -1,6 +1,6 @@
 ﻿namespace core_api.Enums
 {
-    public enum TransactionTypes
+    public enum MovementTypes
     {
         Income,
         Expense,

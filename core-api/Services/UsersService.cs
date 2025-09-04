@@ -14,16 +14,19 @@ namespace core_api.Services
 
         public async Task<IList<User>> GetUsers()
         {
+            await Task.CompletedTask; // placeholder until the asynchronous call exists
             return _users;
         }
 
         public async Task<User?> GetUserById(int id)
         {
-            return _users.FirstOrDefault(u => u.Id == id);
+            await Task.CompletedTask;  // placeholder until the asynchronous call exists
+            return _users.SingleOrDefault(u => u.Id == id);
         }
 
         public async Task<User?> CreateUser(User user)
         {
+            await Task.CompletedTask;  // placeholder until the asynchronous call exists
             _users.Add(user);
             return user;
         }
@@ -33,9 +36,63 @@ namespace core_api.Services
         {
             users.AddRange(
             [
-                new() { Id = 1, FirstName = "Peter", LastName = "Parker", Email = "pparker@example.com", PasswordHash = "123123jljhfljkfh" },
-                new() { Id = 2, FirstName = "Tony", LastName = "Stark", Email = "tstark@example.com", PasswordHash = "123123jljhfljkfh" },
-                new() { Id = 3, FirstName = "Steve", LastName = "Rogers", Email = "srogers@example.com", PasswordHash = "123123jljhfljkfh" }
+                new()
+                {
+                    Id = 1,
+                    FirstName = "Peter",
+                    LastName = "Parker",
+                    Email = "pparker@example.com",
+                    PasswordHash = "123123jljhfljkfh",
+                    Accounts =
+                    [
+                        new ()
+                        {
+                            Id = 1,
+                            Name = "1234567890",
+                            Balance = 1000.00m,
+                            UserId = 1,
+                            Movements = []
+                        }
+                    ]
+                },
+                new()
+                {
+                    Id = 2,
+                    FirstName = "Tony",
+                    LastName = "Stark",
+                    Email = "tstark@example.com",
+                    PasswordHash = "123123jljhfljkfh",
+                    Accounts =
+                    [
+                        new ()
+                        {
+                            Id = 2,
+                            Name = "0987654321",
+                            Balance = 2500.00m,
+                            UserId = 2,
+                            Movements = []
+                        }
+                    ]
+                },
+                new()
+                {
+                    Id = 3,
+                    FirstName = "Steve",
+                    LastName = "Rogers",
+                    Email = "srogers@example.com",
+                    PasswordHash = "123123jljhfljkfh",
+                    Accounts =
+                    [
+                        new ()
+                        {
+                            Id = 3,
+                            Name = "1122334455",
+                            Balance = 3000.00m,
+                            UserId = 3,
+                            Movements = []
+                        }
+                    ]
+                }
             ]);
         }
     }
