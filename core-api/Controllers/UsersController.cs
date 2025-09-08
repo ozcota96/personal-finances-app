@@ -30,7 +30,7 @@ namespace core_api.Controllers
             return user is not null ? Ok(user) : NotFound();
         }
 
-        [HttpGet("login")]
+        [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
         {
             var user = await _usersService.Login(loginDto.Email, loginDto.Password);
