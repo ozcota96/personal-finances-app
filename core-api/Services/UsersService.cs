@@ -1,118 +1,65 @@
 ﻿using core_api.Models;
+using core_api.Models.Request;
+using core_api.Repositories.Interfaces;
 using core_api.Services.Interfaces;
 
 namespace core_api.Services
 {
     public class UsersService : IUsersService
     {
-        private readonly List<User> _users = [];
+        private readonly IUsersRepository _usersRepository;
 
-        public UsersService()
+        public UsersService(IUsersRepository usersRepository)
         {
-            InitializeUsers(_users);
+            _usersRepository = usersRepository;
         }
 
+        // TODO: Generate response models to avoid returning sensitive data like PasswordHash
         public async Task<IList<User>> GetUsers()
         {
-            await Task.CompletedTask; // placeholder until the asynchronous call exists
-            return _users;
+            return await _usersRepository.GetUsersAsync();
         }
 
         public async Task<User?> GetUserById(int id)
         {
-            await Task.CompletedTask;  // placeholder until the asynchronous call exists
-            return _users.SingleOrDefault(u => u.Id == id);
+            return await _usersRepository.GetUserByIdAsync(id);
         }
 
         public async Task<User?> Login(string email, string password)
         {
-            var user = _users.SingleOrDefault(u => u.Email == email);
+            var user = await _usersRepository.GetUserByEmailAsync(email);
             if (user is null)
             {
-                await Task.CompletedTask;  // placeholder until the asynchronous call exists
                 return null;
             }
+            
             var isPasswordValid = BCrypt.Net.BCrypt.Verify(password, user.PasswordHash);
-            await Task.CompletedTask;  // placeholder until the asynchronous call exists
             if (!isPasswordValid)
             {
                 return null;
             }
+            
             return user;
         }
 
-        public async Task<User?> CreateUser(User user)
+        public async Task<User?> CreateUser(CreateUserDto userDto)
         {
-            user.Id = _users.Count;
-            user.Id++; // simple auto-increment simulation
-            await Task.CompletedTask;  // placeholder until the asynchronous call exists
-            _users.Add(user);
-            return user;
-        }
+            var existing = await _usersRepository.GetUserByEmailAsync(userDto.Email);
+            if (existing is not null)
+                return null;
+            
+            var passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+            var user = new User
+            {
+                FirstName = userDto.FirstName,
+                LastName = userDto.LastName,
+                Email = userDto.Email,
+                PasswordHash = passwordHash,
+                CreatedAt = DateTime.UtcNow,
+                UpdatedAt = DateTime.UtcNow
+            };
 
-        // This method can be used to initialize users from a database or other source in the future
-        private static void InitializeUsers(List<User> users)
-        {
-            users.AddRange(
-            [
-                new()
-                {
-                    Id = 1,
-                    FirstName = "Peter",
-                    LastName = "Parker",
-                    Email = "pparker@example.com",
-                    PasswordHash = "123123jljhfljkfh",
-                    Accounts =
-                    [
-                        new ()
-                        {
-                            Id = 1,
-                            Name = "1234567890",
-                            Balance = 1000.00m,
-                            UserId = 1,
-                            Movements = []
-                        }
-                    ]
-                },
-                new()
-                {
-                    Id = 2,
-                    FirstName = "Tony",
-                    LastName = "Stark",
-                    Email = "tstark@example.com",
-                    PasswordHash = "123123jljhfljkfh",
-                    Accounts =
-                    [
-                        new ()
-                        {
-                            Id = 2,
-                            Name = "0987654321",
-                            Balance = 2500.00m,
-                            UserId = 2,
-                            Movements = []
-                        }
-                    ]
-                },
-                new()
-                {
-                    Id = 3,
-                    FirstName = "Steve",
-                    LastName = "Rogers",
-                    Email = "srogers@example.com",
-                    PasswordHash = "123123jljhfljkfh",
-                    Accounts =
-                    [
-                        new ()
-                        {
-                            Id = 3,
-                            Name = "1122334455",
-                            Balance = 3000.00m,
-                            UserId = 3,
-                            Movements = []
-                        }
-                    ]
-                }
-            ]);
+            return await _usersRepository.AddUserAsync(user); ;
         }
     }
 }

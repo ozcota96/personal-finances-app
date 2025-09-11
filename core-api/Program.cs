@@ -1,6 +1,9 @@
+using core_api.Repositories;
+using core_api.Repositories.Interfaces;
 using core_api.Services;
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,14 +46,21 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
     };
 });
 
+// EF Core + PostgreSQL
+builder.Services.AddDbContext<AppDbContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+// Repositories concrete implementation
+builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+
+// Services concrete implementation
+builder.Services.AddScoped<IUsersService, UsersService>();
+builder.Services.AddScoped<IAccountsService, AccountsService>();
+builder.Services.AddScoped<IMovementsService, MovementsService>();
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-// Services concrete implementation
-builder.Services.AddSingleton<IUsersService, UsersService>();
-builder.Services.AddSingleton<IAccountsService, AccountsService>();
-builder.Services.AddSingleton<IMovementsService, MovementsService>();
 
 var app = builder.Build();
 

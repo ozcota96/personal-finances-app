@@ -1,4 +1,5 @@
 ﻿using core_api.Models;
+using core_api.Models.Request;
 
 namespace core_api.Services.Interfaces
 {
@@ -6,7 +7,7 @@ namespace core_api.Services.Interfaces
     {
         Task<IList<User>> GetUsers();
         Task<User?> GetUserById(int id);
-        Task<User?> CreateUser(User user);
         Task<User?> Login(string email, string password);
+        Task<User?> CreateUser(CreateUserDto userDto);
     }
 }

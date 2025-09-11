@@ -1,5 +1,4 @@
-﻿using core_api.Models;
-using core_api.Models.Request;
+﻿using core_api.Models.Request;
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -40,18 +39,11 @@ namespace core_api.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateUser([FromBody] CreateUserDto userDto)
         {
-            var passwordHash = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
-            var user = new User
-            {
-                FirstName = userDto.FirstName,
-                LastName = userDto.LastName,
-                Email = userDto.Email,
-                PasswordHash = passwordHash
-            };
-            await _usersService.CreateUser(user);
-            return Created("api/users/{id}", user);
+            var user = await _usersService.CreateUser(userDto);
+            return user is not null ? Created("api/users/{id}", user) : Conflict();
         }
 
+        // TODO: Implement Update and Delete methods
         [HttpPut("{id}")]
         public IActionResult UpdateUser(int id)
         {
