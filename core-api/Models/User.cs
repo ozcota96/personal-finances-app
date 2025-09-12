@@ -14,6 +14,6 @@ namespace core_api.Models
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int UpdatedBy { get; set; }
-        //public virtual IList<Account> Accounts { get; set; } = []; TODO: implement relationships
+        public virtual IList<Account> Accounts { get; set; } = [];
     }
 }

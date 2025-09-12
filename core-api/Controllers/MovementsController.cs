@@ -1,4 +1,4 @@
-﻿using core_api.Models;
+﻿using core_api.Models.Request;
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,10 +30,10 @@ namespace core_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateMovement([FromBody] Movement movement)
+        public async Task<IActionResult> CreateMovement([FromBody] CreateMovementDto movementDto)
         {
-            await _movementsService.CreateMovement(movement);
-            return Created("api/movements/{id}", movement);
+            var movement = await _movementsService.CreateMovement(movementDto);
+            return movement is not null ? Created("api/movements/{id}", movement) : Conflict();
         }
     }
 }

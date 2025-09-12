@@ -1,4 +1,5 @@
 ﻿using core_api.Models;
+using core_api.Models.Request;
 
 namespace core_api.Services.Interfaces
 {
@@ -6,7 +7,7 @@ namespace core_api.Services.Interfaces
     {
         Task<IList<Account>> GetAccounts();
         Task<Account?> GetAccountById(int id);
-        Task<Account> CreateAccount(Account account);
+        Task<Account?> CreateAccount(CreateAccountDto accountDto);
         Task<Account> UpdateAccount(Account account);
         Task<bool> DeleteAccount(int id);
     }

@@ -1,4 +1,5 @@
 ﻿using core_api.Models;
+using core_api.Models.Request;
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -29,10 +30,10 @@ namespace core_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateAccount([FromBody] Account account)
+        public async Task<IActionResult> CreateAccount([FromBody] CreateAccountDto accountDto)
         {
-            var createdAccount = await _accountService.CreateAccount(account);
-            return Created("api/accounts/{id}", createdAccount);
+            var account = await _accountService.CreateAccount(accountDto);
+            return account is not null ? Created("api/accounts/{id}", account) : Conflict();
         }
     }
 }
