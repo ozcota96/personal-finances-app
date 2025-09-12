@@ -52,6 +52,8 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // Repositories concrete implementation
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
+builder.Services.AddScoped<IAccountsRepository, AccountsRepository>();
+builder.Services.AddScoped<IMovementRepository, MovementsRepository>();
 
 // Services concrete implementation
 builder.Services.AddScoped<IUsersService, UsersService>();

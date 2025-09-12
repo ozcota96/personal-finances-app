@@ -10,5 +10,7 @@ namespace core_api.Repositories
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Account> Accounts { get; set; }
+        public DbSet<Movement> Movements { get; set; }
     }
 }
