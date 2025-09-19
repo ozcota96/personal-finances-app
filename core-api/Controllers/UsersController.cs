@@ -1,4 +1,5 @@
 ﻿using core_api.Models.Request;
+using core_api.Services;
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 
@@ -30,10 +31,15 @@ namespace core_api.Controllers
         }
 
         [HttpPost("login")]
-        public async Task<IActionResult> Login([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> Login([FromBody] LoginDto loginDto, [FromServices] JwtTokenService tokenService)
         {
             var user = await _usersService.Login(loginDto.Email, loginDto.Password);
-            return user is not null ? Ok(user) : Unauthorized(new { Message = "Invalid email or password." });
+            var token = user is not null ? tokenService.GenerateToken(user) : null;
+            return user is not null ? Ok(new
+            {
+                token,
+                user
+            }) : Unauthorized(new { Message = "Invalid email or password." });
         }
 
         [HttpPost]
