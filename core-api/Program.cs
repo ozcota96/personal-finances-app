@@ -72,11 +72,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IUsersRepository, UsersRepository>();
 builder.Services.AddScoped<IAccountsRepository, AccountsRepository>();
 builder.Services.AddScoped<IMovementRepository, MovementsRepository>();
+builder.Services.AddScoped<ICategoriesRepository, CategoriesRepository>();
 
 // Services concrete implementation
 builder.Services.AddScoped<IUsersService, UsersService>();
 builder.Services.AddScoped<IAccountsService, AccountsService>();
 builder.Services.AddScoped<IMovementsService, MovementsService>();
+builder.Services.AddScoped<ICategoriesService, CategoriesService>();
 builder.Services.AddScoped<JwtTokenService>();
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

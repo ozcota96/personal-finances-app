@@ -9,8 +9,71 @@ namespace core_api.Repositories
         {
         }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.CreatedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<User>()
+                .Property(u => u.UpdatedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Account>()
+                .Property(a => a.CreatedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Account>()
+                .Property(a => a.UpdatedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Movement>()
+                .Property(m => m.CreatedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Movement>()
+                .Property(m => m.Date)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Movement>()
+                .Property(m => m.UpdatedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Movement>()
+                .HasOne(m => m.Category)
+                .WithMany(c => c.Movements)
+                .HasForeignKey(m => m.CategoryId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Movement>()
+                .HasOne(m => m.Subcategory)
+                .WithMany(s => s.Movements)
+                .HasForeignKey(m => m.SubcategoryId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            modelBuilder.Entity<Category>()
+                .Property(c => c.CreatedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Category>()
+                .Property(c => c.UpdatedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Subcategory>()
+                .Property(s => s.CreatedAt)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Subcategory>()
+                .Property(s => s.UpdatedAt)
+                .HasColumnType("timestamp without time zone");
+        }
+
         public DbSet<User> Users { get; set; }
         public DbSet<Account> Accounts { get; set; }
         public DbSet<Movement> Movements { get; set; }
+        public DbSet<Category> Categories { get; set; }
+        public DbSet<Subcategory> Subcategories { get; set; }
     }
 }
