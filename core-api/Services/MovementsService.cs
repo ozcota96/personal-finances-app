@@ -29,6 +29,8 @@ namespace core_api.Services
                 AccountId = movementDto.AccountId,
                 Amount = movementDto.Amount,
                 Description = movementDto.Description,
+                CategoryId = movementDto.CategoryId,
+                SubcategoryId = movementDto.SubcategoryId,
                 Date = DateTime.SpecifyKind(movementDto.Date, DateTimeKind.Utc),
                 Type = movementDto.MovementType,
                 CreatedAt = DateTime.UtcNow,

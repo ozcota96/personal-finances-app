@@ -15,31 +15,31 @@ namespace core_api.Repositories
 
             modelBuilder.Entity<User>()
                 .Property(u => u.CreatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<User>()
                 .Property(u => u.UpdatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Account>()
                 .Property(a => a.CreatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Account>()
                 .Property(a => a.UpdatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Movement>()
                 .Property(m => m.CreatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Movement>()
                 .Property(m => m.Date)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Movement>()
                 .Property(m => m.UpdatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Movement>()
                 .HasOne(m => m.Category)
@@ -55,19 +55,19 @@ namespace core_api.Repositories
 
             modelBuilder.Entity<Category>()
                 .Property(c => c.CreatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Category>()
                 .Property(c => c.UpdatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Subcategory>()
                 .Property(s => s.CreatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
 
             modelBuilder.Entity<Subcategory>()
                 .Property(s => s.UpdatedAt)
-                .HasColumnType("timestamp without time zone");
+                .HasColumnType("timestamp with time zone");
         }
 
         public DbSet<User> Users { get; set; }

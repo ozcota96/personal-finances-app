@@ -1,6 +1,5 @@
 ﻿using core_api.Models;
 using core_api.Models.Request;
-using core_api.Repositories;
 using core_api.Repositories.Interfaces;
 using core_api.Services.Interfaces;
 
@@ -21,6 +20,7 @@ namespace core_api.Services
             {
                 Name = category.Name,
                 Description = category.Description,
+                UserId = category.UserId,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
             });
