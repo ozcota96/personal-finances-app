@@ -1,5 +1,4 @@
-﻿using core_api.Models;
-using core_api.Models.Request;
+﻿using core_api.Models.Request;
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 

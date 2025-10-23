@@ -10,10 +10,13 @@ namespace core_api.Models
         public string Email { get; set; } = string.Empty;
         [JsonIgnore]
         public string PasswordHash { get; set; } = string.Empty;
+
         public bool IsDeleted { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime UpdatedAt { get; set; }
         public int UpdatedBy { get; set; }
+
         public virtual IList<Account> Accounts { get; set; } = [];
+        public virtual IList<Category> Categories { get; set; } = [];
     }
 }

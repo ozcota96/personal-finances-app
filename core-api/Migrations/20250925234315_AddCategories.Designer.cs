@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using core_api.Repositories;
@@ -11,9 +12,11 @@ using core_api.Repositories;
 namespace core_api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250925234315_AddCategories")]
+    partial class AddCategories
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -87,12 +90,7 @@ namespace core_api.Migrations
                     b.Property<int>("UpdatedBy")
                         .HasColumnType("integer");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("Categories");
                 });
@@ -111,7 +109,7 @@ namespace core_api.Migrations
                     b.Property<decimal>("Amount")
                         .HasColumnType("numeric");
 
-                    b.Property<int?>("CategoryId")
+                    b.Property<int>("CategoryId")
                         .HasColumnType("integer");
 
                     b.Property<DateTime>("CreatedAt")
@@ -126,9 +124,6 @@ namespace core_api.Migrations
 
                     b.Property<bool>("IsDeleted")
                         .HasColumnType("boolean");
-
-                    b.Property<int?>("SubcategoryId")
-                        .HasColumnType("integer");
 
                     b.Property<int>("Type")
                         .HasColumnType("integer");
@@ -145,47 +140,7 @@ namespace core_api.Migrations
 
                     b.HasIndex("CategoryId");
 
-                    b.HasIndex("SubcategoryId");
-
                     b.ToTable("Movements");
-                });
-
-            modelBuilder.Entity("core_api.Models.Subcategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("CategoryId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("boolean");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("UpdatedBy")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CategoryId");
-
-                    b.ToTable("Subcategories");
                 });
 
             modelBuilder.Entity("core_api.Models.User", b =>
@@ -240,17 +195,6 @@ namespace core_api.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("core_api.Models.Category", b =>
-                {
-                    b.HasOne("core_api.Models.User", "User")
-                        .WithMany("Categories")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("core_api.Models.Movement", b =>
                 {
                     b.HasOne("core_api.Models.Account", "Account")
@@ -260,29 +204,12 @@ namespace core_api.Migrations
                         .IsRequired();
 
                     b.HasOne("core_api.Models.Category", "Category")
-                        .WithMany("Movements")
-                        .HasForeignKey("CategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.HasOne("core_api.Models.Subcategory", "Subcategory")
-                        .WithMany("Movements")
-                        .HasForeignKey("SubcategoryId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
-                    b.Navigation("Account");
-
-                    b.Navigation("Category");
-
-                    b.Navigation("Subcategory");
-                });
-
-            modelBuilder.Entity("core_api.Models.Subcategory", b =>
-                {
-                    b.HasOne("core_api.Models.Category", "Category")
-                        .WithMany("Subcategories")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Account");
 
                     b.Navigation("Category");
                 });
@@ -292,23 +219,9 @@ namespace core_api.Migrations
                     b.Navigation("Movements");
                 });
 
-            modelBuilder.Entity("core_api.Models.Category", b =>
-                {
-                    b.Navigation("Movements");
-
-                    b.Navigation("Subcategories");
-                });
-
-            modelBuilder.Entity("core_api.Models.Subcategory", b =>
-                {
-                    b.Navigation("Movements");
-                });
-
             modelBuilder.Entity("core_api.Models.User", b =>
                 {
                     b.Navigation("Accounts");
-
-                    b.Navigation("Categories");
                 });
 #pragma warning restore 612, 618
         }

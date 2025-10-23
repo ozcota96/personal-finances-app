@@ -13,5 +13,8 @@ namespace core_api.Models.Request
         [Required]
         public DateTime Date { get; set; }
         public int AccountId { get; set; }
+        [Required]
+        public int CategoryId { get; set; }
+        public int? SubcategoryId { get; set; }
     }
 }
