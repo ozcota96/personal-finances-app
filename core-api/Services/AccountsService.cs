@@ -14,9 +14,9 @@ namespace core_api.Services
             _accountsRepository = accountsRepository;
         }
 
-        public Task<IList<Account>> GetAccounts()
+        public async Task<IList<Account>> GetUserAccounts(int userId)
         {
-            throw new NotImplementedException();
+            return await _accountsRepository.GetUserAccounts(userId);
         }
 
         public Task<Account?> GetAccountById(int id)

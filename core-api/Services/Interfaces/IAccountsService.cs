@@ -5,7 +5,7 @@ namespace core_api.Services.Interfaces
 {
     public interface IAccountsService
     {
-        Task<IList<Account>> GetAccounts();
+        Task<IList<Account>> GetUserAccounts(int userId);
         Task<Account?> GetAccountById(int id);
         Task<Account?> CreateAccount(CreateAccountDto accountDto);
         Task<Account> UpdateAccount(Account account);

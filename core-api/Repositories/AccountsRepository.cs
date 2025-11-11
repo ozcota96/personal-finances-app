@@ -1,5 +1,6 @@
 ﻿using core_api.Models;
 using core_api.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
 
 namespace core_api.Repositories
 {
@@ -17,6 +18,14 @@ namespace core_api.Repositories
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync();
             return account; 
+        }
+
+        public async Task<List<Account>> GetUserAccounts(int userId)
+        {
+            return await _context.Accounts
+                .Where(a => a.UserId == userId)
+                .AsNoTracking()
+                .ToListAsync();
         }
     }
 }

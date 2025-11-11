@@ -10,10 +10,12 @@ namespace core_api.Controllers
     public class UsersController : ControllerBase
     {
         private readonly IUsersService _usersService;
-        
-        public UsersController(IUsersService usersService)
+        private readonly IAccountsService _accountsService;
+
+        public UsersController(IUsersService usersService, IAccountsService accountsService)
         {
             _usersService = usersService;
+            _accountsService = accountsService;
         }
 
         [HttpGet]
@@ -28,6 +30,13 @@ namespace core_api.Controllers
         {
             var user = await _usersService.GetUserById(id);
             return user is not null ? Ok(user) : NotFound();
+        }
+
+        [HttpGet ("{id}/accounts")]
+        public async Task<IActionResult> GetUserAccounts(int id)
+        {
+            var accounts = await _accountsService.GetUserAccounts(id);
+            return accounts is not null ? Ok(accounts) : NotFound();
         }
 
         [HttpPost("login")]

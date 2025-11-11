@@ -9,7 +9,7 @@ namespace core_api.Models.Request
         public decimal Amount { get; set; }
         public string Description { get; set; } = string.Empty;
         [Required]
-        public MovementTypes MovementType { get; set; }
+        public int Type { get; set; }
         [Required]
         public DateTime Date { get; set; }
         public int AccountId { get; set; }
