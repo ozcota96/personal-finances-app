@@ -15,10 +15,9 @@ namespace core_api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAccounts()
+        public Task<IActionResult> GetAccounts()
         {
-            var accounts = await _accountService.GetAccounts();
-            return accounts is not null ? Ok(accounts) : NotFound();
+            throw new NotImplementedException();
         }
 
         [HttpGet("{id}")]

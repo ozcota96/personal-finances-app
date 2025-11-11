@@ -4,6 +4,7 @@ namespace core_api.Repositories.Interfaces
 {
     public interface IMovementRepository
     {
+        Task<IList<Movement>> GetMovementsAsync();
         Task<Movement> AddMovementAsync(Movement movement);
     }
 }

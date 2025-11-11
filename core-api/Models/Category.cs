@@ -1,4 +1,6 @@
-﻿namespace core_api.Models
+﻿using System.Text.Json.Serialization;
+
+namespace core_api.Models
 {
     public class Category
     {
@@ -14,6 +16,7 @@
         public int UserId { get; set; }
         public virtual User User { get; set; } = null!;
         public virtual IList<Subcategory> Subcategories { get; set; } = [];
+        [JsonIgnore]
         public virtual IList<Movement> Movements { get; set; } = [];
     }
 }

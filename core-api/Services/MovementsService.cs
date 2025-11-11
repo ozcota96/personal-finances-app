@@ -1,4 +1,5 @@
-﻿using core_api.Models;
+﻿using core_api.Enums;
+using core_api.Models;
 using core_api.Models.Request;
 using core_api.Repositories.Interfaces;
 using core_api.Services.Interfaces;
@@ -16,7 +17,7 @@ namespace core_api.Services
 
         public Task<IList<Movement>> GetMovements()
         {
-            throw new NotImplementedException();
+            return _movementRepository.GetMovementsAsync();
         }
         public Task<Movement?> GetMovementById(int id)
         {
@@ -32,7 +33,7 @@ namespace core_api.Services
                 CategoryId = movementDto.CategoryId,
                 SubcategoryId = movementDto.SubcategoryId,
                 Date = DateTime.SpecifyKind(movementDto.Date, DateTimeKind.Utc),
-                Type = movementDto.MovementType,
+                Type = (MovementTypes)movementDto.Type,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,
             };
