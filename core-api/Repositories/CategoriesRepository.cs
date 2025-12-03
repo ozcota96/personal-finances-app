@@ -26,5 +26,13 @@ namespace core_api.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<IList<Category>> GetUserCategoriesAsync(int userId)
+        {
+            return await _context.Categories
+                .AsNoTracking()
+                .Where(c => c.UserId == userId && !c.IsDeleted)
+                .ToListAsync();
+        }
     }
 }

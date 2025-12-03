@@ -1,5 +1,6 @@
 ﻿using core_api.Models.Request;
 using core_api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_api.Controllers
@@ -29,6 +30,7 @@ namespace core_api.Controllers
             return movement is not null ? Ok(movement) : NotFound();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateMovement([FromBody] CreateMovementDto movementDto)
         {

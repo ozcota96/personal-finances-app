@@ -1,6 +1,7 @@
 ﻿using core_api.Models.Request;
 using core_api.Services;
 using core_api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_api.Controllers
@@ -11,11 +12,13 @@ namespace core_api.Controllers
     {
         private readonly IUsersService _usersService;
         private readonly IAccountsService _accountsService;
+        private readonly ICategoriesService _categoriesService;
 
-        public UsersController(IUsersService usersService, IAccountsService accountsService)
+        public UsersController(IUsersService usersService, IAccountsService accountsService, ICategoriesService categoriesService)
         {
             _usersService = usersService;
             _accountsService = accountsService;
+            _categoriesService = categoriesService;
         }
 
         [HttpGet]
@@ -32,11 +35,20 @@ namespace core_api.Controllers
             return user is not null ? Ok(user) : NotFound();
         }
 
+        [Authorize]
         [HttpGet ("{id}/accounts")]
         public async Task<IActionResult> GetUserAccounts(int id)
         {
             var accounts = await _accountsService.GetUserAccounts(id);
             return accounts is not null ? Ok(accounts) : NotFound();
+        }
+
+        [Authorize]
+        [HttpGet("{id}/categories")]
+        public async Task<IActionResult> GetUserCategories(int id)
+        {
+            var categories = await _categoriesService.GetUserCategoriesAsync(id);
+            return categories is not null ? Ok(categories) : NotFound();
         }
 
         [HttpPost("login")]
@@ -56,19 +68,6 @@ namespace core_api.Controllers
         {
             var user = await _usersService.CreateUser(userDto);
             return user is not null ? Created("api/users/{id}", user) : Conflict();
-        }
-
-        // TODO: Implement Update and Delete methods
-        [HttpPut("{id}")]
-        public IActionResult UpdateUser(int id)
-        {
-            return Ok(new { Message = $"Update user with ID {id}" });
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteUser(int id)
-        {
-            return Ok(new { Message = $"Delete user with ID {id}" });
         }
     }
 }

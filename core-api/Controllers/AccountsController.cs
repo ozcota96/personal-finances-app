@@ -1,5 +1,6 @@
 ﻿using core_api.Models.Request;
 using core_api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace core_api.Controllers
@@ -14,12 +15,15 @@ namespace core_api.Controllers
             _accountService = accountService;
         }
 
-        [HttpGet]
-        public Task<IActionResult> GetAccounts()
+        [Authorize]
+        [HttpGet("{id}/movements")]
+        public async Task<IActionResult> GetAccountMovements(int id)
         {
-            throw new NotImplementedException();
+            var movements = await _accountService.GetAccountMovements(id);
+            return movements is not null ? Ok(movements) : NotFound();
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAccountById(int id)
         {
