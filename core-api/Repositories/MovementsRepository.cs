@@ -20,6 +20,18 @@ namespace core_api.Repositories
             return movement;
         }
 
+        public async Task<IList<Movement>> GetAccountMovements(int accountId)
+        {
+            if (!_context.Accounts.Any(a => a.Id == accountId))
+                return null;
+
+            return await _context.Movements
+                .Where(m => m.AccountId == accountId)
+                .Include(m => m.Category)
+                .AsNoTracking()
+                .ToListAsync();
+        }
+
         public async Task<IList<Movement>> GetMovementsAsync()
         {
             return await _context.Movements

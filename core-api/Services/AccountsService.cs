@@ -8,10 +8,12 @@ namespace core_api.Services
     public class AccountsService : IAccountsService
     {
         private readonly IAccountsRepository _accountsRepository;
+        private readonly IMovementRepository _movementRepository;
 
-        public AccountsService(IAccountsRepository accountsRepository)
+        public AccountsService(IAccountsRepository accountsRepository, IMovementRepository movementRepository)
         {
             _accountsRepository = accountsRepository;
+            _movementRepository = movementRepository;
         }
 
         public async Task<IList<Account>> GetUserAccounts(int userId)
@@ -46,6 +48,12 @@ namespace core_api.Services
         public Task<Account> UpdateAccount(Account account)
         {
             throw new NotImplementedException();
+        }
+
+        public async Task<IList<Movement>> GetAccountMovements(int accountId)
+        {
+            var accountMovements = await _movementRepository.GetAccountMovements(accountId);
+            return accountMovements;
         }
     }
 }

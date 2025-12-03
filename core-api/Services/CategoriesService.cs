@@ -30,5 +30,10 @@ namespace core_api.Services
         {
             return await _categoriesRepository.GetCategoriesAsync();
         }
+
+        public async Task<IList<Category>> GetUserCategoriesAsync(int userId)
+        {
+            return await _categoriesRepository.GetUserCategoriesAsync(userId);
+        }
     }
 }

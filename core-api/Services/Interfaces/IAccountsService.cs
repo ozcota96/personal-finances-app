@@ -7,6 +7,7 @@ namespace core_api.Services.Interfaces
     {
         Task<IList<Account>> GetUserAccounts(int userId);
         Task<Account?> GetAccountById(int id);
+        Task<IList<Movement>> GetAccountMovements(int accountId);
         Task<Account?> CreateAccount(CreateAccountDto accountDto);
         Task<Account> UpdateAccount(Account account);
         Task<bool> DeleteAccount(int id);
