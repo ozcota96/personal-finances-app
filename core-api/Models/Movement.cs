@@ -1,4 +1,5 @@
 ﻿using core_api.Enums;
+using System.Text.Json.Serialization;
 
 namespace core_api.Models
 {
@@ -16,6 +17,7 @@ namespace core_api.Models
         public int UpdatedBy { get; set; }
 
         public int AccountId { get; set; }
+        [JsonIgnore]
         public virtual Account Account { get; set; } = null!;
         public int? CategoryId { get; set; }
         public virtual Category? Category { get; set; } = null!;

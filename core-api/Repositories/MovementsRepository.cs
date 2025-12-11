@@ -1,4 +1,5 @@
-﻿using core_api.Models;
+﻿using core_api.Enums;
+using core_api.Models;
 using core_api.Repositories.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
@@ -13,10 +14,25 @@ namespace core_api.Repositories
             _context = context;
         }
 
-        public async Task<Movement> AddMovementAsync(Movement movement)
+        public async Task<Movement?> AddMovementAsync(Movement movement)
         {
+            using var transaction = await _context.Database.BeginTransactionAsync();
+
+            var account = await _context.Accounts
+                .FirstOrDefaultAsync(a => a.Id == movement.AccountId);
+
+            if (account is null)
+                return null;
+
             _context.Movements.Add(movement);
+
+            account.Balance += movement.Type == MovementTypes.Income
+                ? movement.Amount
+                : -movement.Amount;
+
             await _context.SaveChangesAsync();
+            await transaction.CommitAsync();
+
             return movement;
         }
 

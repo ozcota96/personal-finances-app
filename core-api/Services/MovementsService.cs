@@ -9,10 +9,12 @@ namespace core_api.Services
     public class MovementsService : IMovementsService
     {
         private readonly IMovementRepository _movementRepository;
+        private readonly IAccountsRepository _accountsRepository;
 
-        public MovementsService(IMovementRepository movementRepository)
+        public MovementsService(IMovementRepository movementRepository, IAccountsRepository accountsRepository)
         {
             _movementRepository = movementRepository;
+            _accountsRepository = accountsRepository;
         }
 
         public Task<IList<Movement>> GetMovements()
