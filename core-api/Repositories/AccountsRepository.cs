@@ -17,7 +17,7 @@ namespace core_api.Repositories
         {
             _context.Accounts.Add(account);
             await _context.SaveChangesAsync();
-            return account; 
+            return account;
         }
 
         public async Task<List<Account>> GetUserAccounts(int userId)
