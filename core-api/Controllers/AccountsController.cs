@@ -2,6 +2,7 @@
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace core_api.Controllers
 {
@@ -31,9 +32,16 @@ namespace core_api.Controllers
             return account is not null ? Ok(account) : NotFound();
         }
 
+        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateAccount([FromBody] CreateAccountDto accountDto)
         {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            accountDto.UserId = int.Parse(userId);
             var account = await _accountService.CreateAccount(accountDto);
             return account is not null ? Created("api/accounts/{id}", account) : Conflict();
         }
