@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{localhost}}/categories"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Restaurantes\",\r
+
+    \    \"description\": \"Elegantes o de comida rapida\",\r
+
+    \    \"userId\": 1\r
+
+    }"
+order: 2000

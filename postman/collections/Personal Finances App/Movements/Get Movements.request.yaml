@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{localhost}}/movements"
+method: GET
+order: 2000

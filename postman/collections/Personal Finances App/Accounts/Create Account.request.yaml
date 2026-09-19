@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{localhost}}/accounts"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"nomina\",\r
+
+    \    \"initialBalance\": 10000,\r
+
+    \    \"userId\": 1\r
+
+    }"
+order: 1000
