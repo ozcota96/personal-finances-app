@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{localhost}}/users/3"
+method: GET
+order: 2000

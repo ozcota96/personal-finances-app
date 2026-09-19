@@ -1,0 +1,4 @@
+$kind: http-request
+url: "{{localhost}}/users/1/accounts"
+method: GET
+order: 5000

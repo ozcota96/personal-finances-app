@@ -1,0 +1,14 @@
+# Use this workspace to collaborate
+workspace:
+  id: 06ce5636-cd2e-4c19-ab50-afc3fa4dcdae
+
+localResources:
+  specs:
+    - ../core-api/obj/Debug/net9.0/EndpointInfo/core-api.json
+    - ../core-api/obj/Debug/net8.0/EndpointInfo/core-api.json
+
+# Each entry here maps a local resource to one or more corresponding objects in Postman Cloud
+
+cloudResources:
+  collections:
+    ../postman/collections/Personal Finances App: 36ec4829-f428-4dcb-a5c7-9f82be2d614b

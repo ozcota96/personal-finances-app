@@ -1,0 +1,15 @@
+$kind: http-request
+url: "{{localhost}}/subcategories"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"name\": \"Estacionamiento\",\r
+
+    \    \"description\": \"Cargos de estacionamiento publico\",\r
+
+    \    \"categoryId\": 3\r
+
+    }"
+order: 1000

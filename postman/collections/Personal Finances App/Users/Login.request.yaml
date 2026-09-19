@@ -1,0 +1,13 @@
+$kind: http-request
+url: "{{localhost}}/users/login"
+method: POST
+body:
+  type: json
+  content: "{\r
+
+    \    \"email\": \"bbanner@example.com\",\r
+
+    \    \"password\": \"HulkInBruceOut\"\r
+
+    }"
+order: 4000
