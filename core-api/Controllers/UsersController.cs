@@ -21,13 +21,6 @@ namespace core_api.Controllers
             _categoriesService = categoriesService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
-        {
-            var users = await _usersService.GetUsers();
-            return users is not null ? Ok(users) : NotFound();
-        }
-
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
@@ -68,6 +61,13 @@ namespace core_api.Controllers
         {
             var user = await _usersService.CreateUser(userDto);
             return user is not null ? Created("api/users/{id}", user) : Conflict();
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto userDto, int id)
+        {
+            var success = await _usersService.UpdateUser(userDto, id);
+            return success ? Ok() : NotFound();
         }
     }
 }

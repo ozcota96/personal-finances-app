@@ -1,5 +1,6 @@
 ﻿using core_api.Models;
 using core_api.Models.Request;
+using core_api.Models.Response;
 using core_api.Repositories.Interfaces;
 using core_api.Services.Interfaces;
 
@@ -15,14 +16,22 @@ namespace core_api.Services
         }
 
         // TODO: Generate response models to avoid returning sensitive data like PasswordHash
-        public async Task<IList<User>> GetUsers()
-        {
-            return await _usersRepository.GetUsersAsync();
-        }
 
-        public async Task<User?> GetUserById(int id)
+        public async Task<GetUserDto?> GetUserById(int id)
         {
-            return await _usersRepository.GetUserByIdAsync(id);
+            var user = await _usersRepository.GetUserByIdAsync(id);
+            if (user is null)
+            {
+                return null;
+            }
+
+            return new GetUserDto
+            {
+                Id = user.Id,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+            };
         }
 
         public async Task<User?> Login(string email, string password)
@@ -60,6 +69,26 @@ namespace core_api.Services
             };
 
             return await _usersRepository.AddUserAsync(user); ;
+        }
+
+        public async Task<bool> UpdateUser(UpdateUserDto userDto, int id)
+        {
+            var user = await _usersRepository.GetUserByIdAsync(id);
+            
+            if (user is null)
+            {
+                return false;
+            }
+
+            user.FirstName = userDto.FirstName;
+            user.LastName = userDto.LastName;
+            user.Email = userDto.Email;
+            // History columns
+            user.UpdatedAt = DateTime.UtcNow;
+            user.UpdatedBy = id;
+
+            await _usersRepository.UpdateUserAsync(user);
+            return true;
         }
     }
 }
