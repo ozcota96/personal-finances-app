@@ -71,7 +71,7 @@ namespace core_api.Services
             return await _usersRepository.AddUserAsync(user); ;
         }
 
-        public async Task<bool> UpdateUser(UpdateUserDto userDto, int id)
+        public async Task<bool> UpdateUser(UpdateUserDto userDto, int id, int userId)
         {
             var user = await _usersRepository.GetUserByIdAsync(id);
             
@@ -85,7 +85,7 @@ namespace core_api.Services
             user.Email = userDto.Email;
             // History columns
             user.UpdatedAt = DateTime.UtcNow;
-            user.UpdatedBy = id;
+            user.UpdatedBy = userId;
 
             await _usersRepository.UpdateUserAsync(user);
             return true;

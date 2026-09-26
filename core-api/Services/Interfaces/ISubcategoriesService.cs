@@ -5,7 +5,7 @@ namespace core_api.Services.Interfaces
 {
     public interface ISubcategoriesService
     {
-        Task<IList<Subcategory>> GetSubcategoriesAsync();
-        Task<Subcategory> CreateSubcategoryAsync(CreateSubcategoryDto subcategory);
+        Task<IList<Subcategory>> GetSubcategories();
+        Task<Subcategory> CreateSubcategory(CreateSubcategoryDto subcategory);
     }
 }

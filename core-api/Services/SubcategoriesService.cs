@@ -14,7 +14,7 @@ namespace core_api.Services
             _subcategoriesRepository = subcategoriesRepository;
         }
 
-        public async Task<Subcategory> CreateSubcategoryAsync(CreateSubcategoryDto subcategory)
+        public async Task<Subcategory> CreateSubcategory(CreateSubcategoryDto subcategory)
         {
             return await _subcategoriesRepository.AddSubcategoryAsync(new Subcategory
             {
@@ -26,7 +26,7 @@ namespace core_api.Services
             });
         }
 
-        public async Task<IList<Subcategory>> GetSubcategoriesAsync()
+        public async Task<IList<Subcategory>> GetSubcategories()
         {
             return await _subcategoriesRepository.GetSubcategoriesAsync();
         }

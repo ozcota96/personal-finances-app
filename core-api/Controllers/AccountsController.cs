@@ -25,14 +25,6 @@ namespace core_api.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetAccountById(int id)
-        {
-            var account = await _accountService.GetAccountById(id);
-            return account is not null ? Ok(account) : NotFound();
-        }
-
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateAccount([FromBody] CreateAccountDto accountDto)
         {
@@ -44,6 +36,32 @@ namespace core_api.Controllers
             accountDto.UserId = int.Parse(userId);
             var account = await _accountService.CreateAccount(accountDto);
             return account is not null ? Created("api/accounts/{id}", account) : Conflict();
+        }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateAccount([FromBody] UpdateAccountDto accountDto, int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if(string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var success = await _accountService.UpdateAccount(accountDto, id, Convert.ToInt32(userId));
+            return success ? NoContent() : NotFound();
+        }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteAccount(int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var success = await _accountService.DeleteAccount(id, Convert.ToInt32(userId));
+            return success ? NoContent() : NotFound();
         }
     }
 }

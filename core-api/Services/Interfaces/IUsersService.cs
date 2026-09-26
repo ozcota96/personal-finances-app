@@ -9,6 +9,6 @@ namespace core_api.Services.Interfaces
         Task<GetUserDto?> GetUserById(int id);
         Task<User?> Login(string email, string password);
         Task<User?> CreateUser(CreateUserDto userDto);
-        Task<bool> UpdateUser(UpdateUserDto userDto, int id);
+        Task<bool> UpdateUser(UpdateUserDto userDto, int id, int userId);
     }
 }

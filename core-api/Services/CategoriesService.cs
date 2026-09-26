@@ -14,7 +14,7 @@ namespace core_api.Services
             _categoriesRepository = categoriesRepository;
         }
 
-        public async Task<Category> CreateCategoryAsync(CreateCategoryDto category)
+        public async Task<Category> CreateCategory(CreateCategoryDto category)
         {
             return await _categoriesRepository.AddCategoryAsync(new Category
             {
@@ -26,12 +26,12 @@ namespace core_api.Services
             });
         }
 
-        public async Task<IList<Category>> GetCategoriesAsync()
+        public async Task<IList<Category>> GetCategories()
         {
             return await _categoriesRepository.GetCategoriesAsync();
         }
 
-        public async Task<IList<Category>> GetUserCategoriesAsync(int userId)
+        public async Task<IList<Category>> GetUserCategories(int userId)
         {
             return await _categoriesRepository.GetUserCategoriesAsync(userId);
         }

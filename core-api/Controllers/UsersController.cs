@@ -3,6 +3,7 @@ using core_api.Services;
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace core_api.Controllers
 {
@@ -40,7 +41,7 @@ namespace core_api.Controllers
         [HttpGet("{id}/categories")]
         public async Task<IActionResult> GetUserCategories(int id)
         {
-            var categories = await _categoriesService.GetUserCategoriesAsync(id);
+            var categories = await _categoriesService.GetUserCategories(id);
             return categories is not null ? Ok(categories) : NotFound();
         }
 
@@ -63,11 +64,17 @@ namespace core_api.Controllers
             return user is not null ? Created("api/users/{id}", user) : Conflict();
         }
 
+        [Authorize]
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto userDto, int id)
         {
-            var success = await _usersService.UpdateUser(userDto, id);
-            return success ? Ok() : NotFound();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var success = await _usersService.UpdateUser(userDto, id, Convert.ToInt32(userId));
+            return success ? NoContent() : NotFound();
         }
     }
 }

@@ -18,14 +18,14 @@ namespace core_api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetSubcategories()
         {
-            var subcategories = await _subcategoriesService.GetSubcategoriesAsync();
+            var subcategories = await _subcategoriesService.GetSubcategories();
             return subcategories is not null ? Ok(subcategories) : NotFound();
         }
 
         [HttpPost]
         public async Task<IActionResult> CreateSubcategory([FromBody] CreateSubcategoryDto subcategoryDto)
         {
-            var subcategory = await _subcategoriesService.CreateSubcategoryAsync(subcategoryDto);
+            var subcategory = await _subcategoriesService.CreateSubcategory(subcategoryDto);
             return subcategory is not null ? Created("api/subcategories/{id}", subcategory) : Conflict();
         }
     }

@@ -5,8 +5,8 @@ namespace core_api.Services.Interfaces
 {
     public interface ICategoriesService
     {
-        Task<IList<Category>> GetCategoriesAsync();
-        Task<IList<Category>> GetUserCategoriesAsync(int userId);
-        Task<Category> CreateCategoryAsync(CreateCategoryDto category);
+        Task<IList<Category>> GetCategories();
+        Task<IList<Category>> GetUserCategories(int userId);
+        Task<Category> CreateCategory(CreateCategoryDto category);
     }
 }
