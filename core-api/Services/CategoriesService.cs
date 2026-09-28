@@ -1,5 +1,6 @@
 ﻿using core_api.Models;
 using core_api.Models.Request;
+using core_api.Models.Response;
 using core_api.Repositories.Interfaces;
 using core_api.Services.Interfaces;
 
@@ -33,9 +34,28 @@ namespace core_api.Services
             return await _categoriesRepository.GetCategoriesAsync();
         }
 
-        public async Task<IList<Category>> GetUserCategories(int userId)
+        public async Task<IList<GetCategoryDto>> GetUserCategories(int userId)
         {
-            return await _categoriesRepository.GetUserCategoriesAsync(userId);
+            var userCategories = await _categoriesRepository.GetUserCategoriesAsync(userId);
+
+            if (userCategories == null || !userCategories.Any())
+            {
+                return [];
+            }
+
+            return [.. userCategories.Select(c => new GetCategoryDto
+            {
+                Id = c.Id,
+                Name = c.Name,
+                Description = c.Description,
+                Subcategories = [.. c.Subcategories.Select(s => new GetSubcategoryDto
+                {
+                    Id = s.Id,
+                    Name = s.Name,
+                    Description = s.Description,
+                    CategoryId = s.CategoryId
+                })]
+            })];
         }
 
         public async Task<bool> UpdateCategory(int categoryId, CreateCategoryDto categoryDto, int userId)

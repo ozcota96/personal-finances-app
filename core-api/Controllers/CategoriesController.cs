@@ -11,10 +11,12 @@ namespace core_api.Controllers
     public class CategoriesController : ControllerBase
     {
         private readonly ICategoriesService _categoriesService;
+        private readonly ISubcategoriesService _subcategoriesService;
 
-        public CategoriesController(ICategoriesService categoriesService)
+        public CategoriesController(ICategoriesService categoriesService, ISubcategoriesService subcategoriesService)
         {
             _categoriesService = categoriesService;
+            _subcategoriesService = subcategoriesService;
         }
 
         [HttpGet]

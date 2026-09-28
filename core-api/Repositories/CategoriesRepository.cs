@@ -38,6 +38,7 @@ namespace core_api.Repositories
         {
             return await _context.Categories
                 .AsNoTracking()
+                .Include(c => c.Subcategories)
                 .Where(c => c.UserId == userId && !c.IsDeleted)
                 .ToListAsync();
         }
