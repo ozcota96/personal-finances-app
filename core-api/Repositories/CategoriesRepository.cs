@@ -27,12 +27,31 @@ namespace core_api.Repositories
                 .ToListAsync();
         }
 
+        public async Task<Category?> GetCategoryByIdAsync(int categoryId)
+        {
+            return await _context.Categories
+                .AsNoTracking()
+                .FirstOrDefaultAsync(c => c.Id == categoryId && !c.IsDeleted);
+        }
+
         public async Task<IList<Category>> GetUserCategoriesAsync(int userId)
         {
             return await _context.Categories
                 .AsNoTracking()
                 .Where(c => c.UserId == userId && !c.IsDeleted)
                 .ToListAsync();
+        }
+
+        public async Task UpdateCategoryAsync(Category category)
+        {
+            _context.Categories.Update(category);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task DeleteCategoryAsync(Category category)
+        {
+            _context.Categories.Update(category);
+            await _context.SaveChangesAsync();
         }
     }
 }

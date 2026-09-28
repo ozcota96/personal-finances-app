@@ -7,6 +7,8 @@ namespace core_api.Services.Interfaces
     {
         Task<IList<Category>> GetCategories();
         Task<IList<Category>> GetUserCategories(int userId);
-        Task<Category> CreateCategory(CreateCategoryDto category);
+        Task<Category> CreateCategory(CreateCategoryDto category, int userId);
+        Task<bool> UpdateCategory(int categoryId, CreateCategoryDto categoryDto, int userId);
+        Task<bool> DeleteCategory(int categoryId, int userId);
     }
 }
