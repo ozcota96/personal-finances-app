@@ -14,7 +14,7 @@ namespace core_api.Services
             _subcategoriesRepository = subcategoriesRepository;
         }
 
-        public async Task<Subcategory> CreateSubcategoryAsync(CreateSubcategoryDto subcategory)
+        public async Task<Subcategory> CreateSubcategory(CreateSubcategoryDto subcategory)
         {
             return await _subcategoriesRepository.AddSubcategoryAsync(new Subcategory
             {
@@ -26,9 +26,40 @@ namespace core_api.Services
             });
         }
 
-        public async Task<IList<Subcategory>> GetSubcategoriesAsync()
+        public async Task<bool> DeleteSubcategory(int subcategoryId, int userId)
         {
-            return await _subcategoriesRepository.GetSubcategoriesAsync();
+            var subcategory = await _subcategoriesRepository.GetSubcategoryByIdAsync(subcategoryId);
+            if (subcategory == null)
+            {
+                return false;
+            }
+
+            subcategory.IsDeleted = true;
+            // History columns
+            subcategory.UpdatedAt = DateTime.UtcNow;
+            subcategory.UpdatedBy = userId;
+
+            await _subcategoriesRepository.UpdateSubcategoryAsync(subcategory);
+            return true;
+        }
+
+        public async Task<bool> UpdateSubcategory(int subcategoryId, UpdateSubcategoryDto subcategoryDto, int userId)
+        {
+            var subcategory = await _subcategoriesRepository.GetSubcategoryByIdAsync(subcategoryId);
+            if (subcategory == null)
+            { 
+                return false;
+            }
+
+            subcategory.Name = subcategoryDto.Name;
+            subcategory.Description = subcategoryDto.Description;
+            subcategory.CategoryId = subcategoryDto.CategoryId;
+            // History columns
+            subcategory.UpdatedAt = DateTime.UtcNow;
+            subcategory.UpdatedBy = userId;
+
+            await _subcategoriesRepository.UpdateSubcategoryAsync(subcategory);
+            return true;
         }
     }
 }

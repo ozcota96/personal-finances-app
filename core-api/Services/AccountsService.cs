@@ -18,12 +18,13 @@ namespace core_api.Services
 
         public async Task<IList<Account>> GetUserAccounts(int userId)
         {
-            return await _accountsRepository.GetUserAccounts(userId);
+            return await _accountsRepository.GetUserAccountsAsync(userId);
         }
 
-        public Task<Account?> GetAccountById(int id)
+        public async Task<IList<Movement>> GetAccountMovements(int accountId)
         {
-            throw new NotImplementedException();
+            var accountMovements = await _movementRepository.GetAccountMovementsAsync(accountId);
+            return accountMovements;
         }
 
         public async Task<Account?> CreateAccount(CreateAccountDto accountDto)
@@ -40,20 +41,40 @@ namespace core_api.Services
             return await _accountsRepository.AddAccountAsync(account);
         }
 
-        public Task<bool> DeleteAccount(int id)
+        public async Task<bool> UpdateAccount(UpdateAccountDto accountDto, int id, int userId)
         {
-            throw new NotImplementedException();
+            var account = await _accountsRepository.GetAccountByIdAsync(id);
+            if(account is null)
+            {
+                return false;
+            }
+            account.Name = accountDto.Name;
+            account.Balance = accountDto.Balance;
+            // History columns
+            account.UpdatedAt = DateTime.UtcNow;
+            account.UpdatedBy = userId;
+
+            await _accountsRepository.UpdateAccountAsync(account);
+            return true;
         }
 
-        public Task<Account> UpdateAccount(Account account)
+        public async Task<bool> DeleteAccount(int id, int userId)
         {
-            throw new NotImplementedException();
+            var account = await _accountsRepository.GetAccountByIdAsync(id);
+            if (account is null)
+            {
+                return false;
+            }
+
+            // Soft delete
+            account.IsDeleted = true;
+            account.UpdatedAt = DateTime.UtcNow;
+            account.UpdatedBy = userId;
+
+            await _accountsRepository.DeleteAccountAsync(account);
+            return true;
         }
 
-        public async Task<IList<Movement>> GetAccountMovements(int accountId)
-        {
-            var accountMovements = await _movementRepository.GetAccountMovements(accountId);
-            return accountMovements;
-        }
+        
     }
 }

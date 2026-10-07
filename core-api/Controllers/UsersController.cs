@@ -3,6 +3,7 @@ using core_api.Services;
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace core_api.Controllers
 {
@@ -19,13 +20,6 @@ namespace core_api.Controllers
             _usersService = usersService;
             _accountsService = accountsService;
             _categoriesService = categoriesService;
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetUsers()
-        {
-            var users = await _usersService.GetUsers();
-            return users is not null ? Ok(users) : NotFound();
         }
 
         [HttpGet("{id}")]
@@ -47,7 +41,7 @@ namespace core_api.Controllers
         [HttpGet("{id}/categories")]
         public async Task<IActionResult> GetUserCategories(int id)
         {
-            var categories = await _categoriesService.GetUserCategoriesAsync(id);
+            var categories = await _categoriesService.GetUserCategories(id);
             return categories is not null ? Ok(categories) : NotFound();
         }
 
@@ -68,6 +62,19 @@ namespace core_api.Controllers
         {
             var user = await _usersService.CreateUser(userDto);
             return user is not null ? Created("api/users/{id}", user) : Conflict();
+        }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser([FromBody] UpdateUserDto userDto, int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var success = await _usersService.UpdateUser(userDto, id, Convert.ToInt32(userId));
+            return success ? NoContent() : NotFound();
         }
     }
 }

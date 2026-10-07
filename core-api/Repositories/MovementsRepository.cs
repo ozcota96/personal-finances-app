@@ -36,7 +36,7 @@ namespace core_api.Repositories
             return movement;
         }
 
-        public async Task<IList<Movement>> GetAccountMovements(int accountId)
+        public async Task<IList<Movement>> GetAccountMovementsAsync(int accountId)
         {
             if (!_context.Accounts.Any(a => a.Id == accountId))
                 return null;
