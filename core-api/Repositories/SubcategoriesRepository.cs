@@ -20,11 +20,23 @@ namespace core_api.Repositories
             return subcategory;
         }
 
-        public async Task<IList<Subcategory>> GetSubcategoriesAsync()
+        public async Task DeleteSubcategoryAsync(Subcategory subcategory)
+        {
+            _context.Subcategories.Update(subcategory);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Subcategory?> GetSubcategoryByIdAsync(int subcategoryId)
         {
             return await _context.Subcategories
                 .AsNoTracking()
-                .ToListAsync();
+                .FirstOrDefaultAsync(s => s.Id == subcategoryId && s.IsDeleted == false);
+        }
+
+        public async Task UpdateSubcategoryAsync(Subcategory subcategory)
+        {
+            _context.Subcategories.Update(subcategory);
+            await _context.SaveChangesAsync();
         }
     }
 }
