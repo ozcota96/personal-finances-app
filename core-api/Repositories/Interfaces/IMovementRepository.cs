@@ -7,5 +7,6 @@ namespace core_api.Repositories.Interfaces
         Task<IList<Movement>> GetMovementsAsync();
         Task<Movement?> AddMovementAsync(Movement movement);
         Task<IList<Movement>> GetAccountMovementsAsync(int accountId);
+        Task<IList<Movement>> GetUserMovementsAsync(int userId);
     }
 }

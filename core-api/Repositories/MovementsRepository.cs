@@ -55,5 +55,17 @@ namespace core_api.Repositories
                 .AsNoTracking()
                 .ToListAsync();
         }
+
+        public async Task<IList<Movement>> GetUserMovementsAsync(int userId)
+        {
+            return await _context.Movements
+                .Include(m => m.Account)
+                .Include(m => m.Category)
+                .Include(m => m.Subcategory)
+                .Where(m => m.Account.UserId == userId)
+                .OrderByDescending(m => m.CreatedAt)
+                .AsNoTracking()
+                .ToListAsync();
+        }
     }
 }

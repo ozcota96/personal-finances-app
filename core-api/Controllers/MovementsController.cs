@@ -2,6 +2,7 @@
 using core_api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace core_api.Controllers
 {
@@ -16,18 +17,17 @@ namespace core_api.Controllers
             _movementsService = movementsService;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetMovements()
+        [Authorize]
+        [HttpGet("dashboard")]
+        public async Task<IActionResult> GetMovementsDashboard()
         {
-            var movements = await _movementsService.GetMovements();
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var movements = await _movementsService.GetDashboardMovements(Convert.ToInt32(userId));
             return movements is not null ? Ok(movements) : NotFound();
-        }
-
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetMovementById(int id)
-        {
-            var movement = await _movementsService.GetMovementById(id);
-            return movement is not null ? Ok(movement) : NotFound();
         }
 
         [Authorize]

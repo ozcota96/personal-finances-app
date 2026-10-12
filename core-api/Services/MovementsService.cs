@@ -1,6 +1,7 @@
 ﻿using core_api.Enums;
 using core_api.Models;
 using core_api.Models.Request;
+using core_api.Models.Response;
 using core_api.Repositories.Interfaces;
 using core_api.Services.Interfaces;
 
@@ -17,14 +18,22 @@ namespace core_api.Services
             _accountsRepository = accountsRepository;
         }
 
-        public Task<IList<Movement>> GetMovements()
+        public async Task<IList<GetMovementDto>> GetDashboardMovements(int userId)
         {
-            return _movementRepository.GetMovementsAsync();
+            var movements = await _movementRepository.GetUserMovementsAsync(userId);
+            return [.. movements.Select(m => new GetMovementDto
+            {
+                Id = m.Id,
+                Amount = m.Amount,
+                Description = m.Description,
+                MovementType = m.Type,
+                Date = m.Date,
+                Account = m.Account?.Name ?? string.Empty,
+                Category = m.Category?.Name ?? string.Empty,
+                Subcategory = m.Subcategory?.Name ?? string.Empty
+            })];
         }
-        public Task<Movement?> GetMovementById(int id)
-        {
-            throw new NotImplementedException();
-        }
+
         public async Task<Movement?> CreateMovement(CreateMovementDto movementDto)
         {
             var movement = new Movement
@@ -42,13 +51,7 @@ namespace core_api.Services
 
             return await _movementRepository.AddMovementAsync(movement);
         }
-        public bool DeleteMovement(int id)
-        {
-            throw new NotImplementedException();
-        }
-        public Task<Movement> UpdateMovement(int id, Movement transaction)
-        {
-            throw new NotImplementedException();
-        }
+
+        
     }
 }
