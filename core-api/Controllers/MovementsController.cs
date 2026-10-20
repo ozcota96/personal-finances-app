@@ -37,5 +37,32 @@ namespace core_api.Controllers
             var movement = await _movementsService.CreateMovement(movementDto);
             return movement is not null ? Created("api/movements/{id}", movement) : Conflict();
         }
+
+        [Authorize]
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateMovement([FromBody] UpdateMovementDto movementDto, int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            
+            var result = await _movementsService.UpdateMovement(id, movementDto, Convert.ToInt32(userId));
+            return result ? NoContent() : NotFound();
+        }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteMovement(int id)
+        {
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var result = await _movementsService.DeleteMovement(id, Convert.ToInt32(userId));
+            return result ? NoContent() : NotFound();
+        }
     }
 }

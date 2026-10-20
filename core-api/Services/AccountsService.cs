@@ -21,18 +21,12 @@ namespace core_api.Services
             return await _accountsRepository.GetUserAccountsAsync(userId);
         }
 
-        public async Task<IList<Movement>> GetAccountMovements(int accountId)
-        {
-            var accountMovements = await _movementRepository.GetAccountMovementsAsync(accountId);
-            return accountMovements;
-        }
-
         public async Task<Account?> CreateAccount(CreateAccountDto accountDto)
         {
             var account = new Account
             {
                 Name = accountDto.Name,
-                Balance = accountDto.InitialBalance,
+                Balance = accountDto.Balance,
                 UserId = accountDto.UserId,
                 CreatedAt = DateTime.UtcNow,
                 UpdatedAt = DateTime.UtcNow,

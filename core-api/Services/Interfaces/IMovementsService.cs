@@ -8,5 +8,7 @@ namespace core_api.Services.Interfaces
     {
         Task<Movement?> CreateMovement(CreateMovementDto movementDto);
         Task<IList<GetMovementDto>> GetDashboardMovements(int userId);
+        Task<bool> UpdateMovement(int movementId, UpdateMovementDto movementDto, int userId);
+        Task<bool> DeleteMovement(int movementId, int userId);
     }
 }

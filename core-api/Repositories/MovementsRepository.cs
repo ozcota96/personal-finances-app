@@ -16,44 +16,22 @@ namespace core_api.Repositories
 
         public async Task<Movement?> AddMovementAsync(Movement movement)
         {
-            using var transaction = await _context.Database.BeginTransactionAsync();
-
-            var account = await _context.Accounts
-                .FirstOrDefaultAsync(a => a.Id == movement.AccountId);
-
-            if (account is null)
-                return null;
-
-            _context.Movements.Add(movement);
-
-            account.Balance += movement.Type == MovementTypes.Income
-                ? movement.Amount
-                : -movement.Amount;
-
+            _context.Add(movement);
             await _context.SaveChangesAsync();
-            await transaction.CommitAsync();
-
             return movement;
         }
 
-        public async Task<IList<Movement>> GetAccountMovementsAsync(int accountId)
+        public async Task DeleteMovementAsync(Movement movement)
         {
-            if (!_context.Accounts.Any(a => a.Id == accountId))
-                return null;
-
-            return await _context.Movements
-                .Where(m => m.AccountId == accountId)
-                .Include(m => m.Category)
-                .AsNoTracking()
-                .ToListAsync();
+            _context.Movements.Update(movement);
+            await _context.SaveChangesAsync();
         }
 
-        public async Task<IList<Movement>> GetMovementsAsync()
+        public async Task<Movement?> GetMovementByIdAsync(int id)
         {
             return await _context.Movements
-                .Include(m => m.Category)
-                .AsNoTracking()
-                .ToListAsync();
+                .Include(m => m.Account)
+                .FirstOrDefaultAsync(m => m.Id == id && !m.IsDeleted);
         }
 
         public async Task<IList<Movement>> GetUserMovementsAsync(int userId)
@@ -62,10 +40,16 @@ namespace core_api.Repositories
                 .Include(m => m.Account)
                 .Include(m => m.Category)
                 .Include(m => m.Subcategory)
-                .Where(m => m.Account.UserId == userId)
+                .Where(m => m.Account.UserId == userId && !m.IsDeleted)
                 .OrderByDescending(m => m.CreatedAt)
                 .AsNoTracking()
                 .ToListAsync();
+        }
+
+        public async Task UpdateMovementAsync(Movement movement)
+        {
+            _context.Movements.Update(movement);
+            await _context.SaveChangesAsync();
         }
     }
 }
