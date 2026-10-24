@@ -4,8 +4,10 @@ namespace core_api.Repositories.Interfaces
 {
     public interface IMovementRepository
     {
-        Task<IList<Movement>> GetMovementsAsync();
+        Task<Movement?> GetMovementByIdAsync(int id);
         Task<Movement?> AddMovementAsync(Movement movement);
-        Task<IList<Movement>> GetAccountMovementsAsync(int accountId);
+        Task<IList<Movement>> GetUserMovementsAsync(int userId);
+        Task UpdateMovementAsync(Movement movement);
+        Task DeleteMovementAsync(Movement movement);
     }
 }

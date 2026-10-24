@@ -17,14 +17,6 @@ namespace core_api.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id}/movements")]
-        public async Task<IActionResult> GetAccountMovements(int id)
-        {
-            var movements = await _accountService.GetAccountMovements(id);
-            return movements is not null ? Ok(movements) : NotFound();
-        }
-
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> CreateAccount([FromBody] CreateAccountDto accountDto)
         {
