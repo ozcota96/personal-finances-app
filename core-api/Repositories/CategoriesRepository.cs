@@ -38,8 +38,9 @@ namespace core_api.Repositories
         {
             return await _context.Categories
                 .AsNoTracking()
-                .Include(c => c.Subcategories)
+                .Include(c => c.Subcategories.OrderBy(s => s.Name))
                 .Where(c => c.UserId == userId && !c.IsDeleted)
+                .OrderBy(c => c.Name)
                 .ToListAsync();
         }
 

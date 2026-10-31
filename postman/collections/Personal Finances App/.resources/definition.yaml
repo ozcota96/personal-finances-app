@@ -1,2 +1,4 @@
 $kind: collection
 description: ""
+variables:
+  localhost: ""

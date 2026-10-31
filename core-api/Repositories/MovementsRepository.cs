@@ -34,13 +34,16 @@ namespace core_api.Repositories
                 .FirstOrDefaultAsync(m => m.Id == id && !m.IsDeleted);
         }
 
-        public async Task<IList<Movement>> GetUserMovementsAsync(int userId)
+        public async Task<IList<Movement>> GetUserMovementsAsync(int userId, int month, int year)
         {
             return await _context.Movements
                 .Include(m => m.Account)
                 .Include(m => m.Category)
                 .Include(m => m.Subcategory)
-                .Where(m => m.Account.UserId == userId && !m.IsDeleted)
+                .Where(m => m.Account.UserId == userId && 
+                    !m.IsDeleted && 
+                    m.Date.Month == month && 
+                    m.Date.Year == year)
                 .OrderByDescending(m => m.CreatedAt)
                 .AsNoTracking()
                 .ToListAsync();

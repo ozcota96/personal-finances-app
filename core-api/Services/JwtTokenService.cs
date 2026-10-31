@@ -1,4 +1,5 @@
 ﻿using core_api.Models;
+using core_api.Models.Response;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -15,7 +16,7 @@ namespace core_api.Services
             _configuration = configuration;
         }
 
-        public string GenerateToken(User user)
+        public string GenerateToken(GetUserDto user)
         {
             var claims = new[]
             {

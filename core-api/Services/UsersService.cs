@@ -34,7 +34,7 @@ namespace core_api.Services
             };
         }
 
-        public async Task<User?> Login(string email, string password)
+        public async Task<GetUserDto?> Login(string email, string password)
         {
             var user = await _usersRepository.GetUserByEmailAsync(email);
             if (user is null)
@@ -47,8 +47,16 @@ namespace core_api.Services
             {
                 return null;
             }
+
+            var userResponse = new GetUserDto
+            {
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+                Email = user.Email,
+                Id = user.Id,
+            };
             
-            return user;
+            return userResponse;
         }
 
         public async Task<User?> CreateUser(CreateUserDto userDto)

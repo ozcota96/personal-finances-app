@@ -30,6 +30,7 @@ namespace core_api.Repositories
         {
             return await _context.Accounts
                 .Where(a => a.UserId == userId && !a.IsDeleted)
+                .OrderBy(a => a.Name)
                 .AsNoTracking()
                 .ToListAsync();
         }

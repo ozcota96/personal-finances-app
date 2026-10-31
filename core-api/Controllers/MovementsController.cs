@@ -19,14 +19,15 @@ namespace core_api.Controllers
 
         [Authorize]
         [HttpGet("dashboard")]
-        public async Task<IActionResult> GetMovementsDashboard()
+        public async Task<IActionResult> GetMovementsDashboard([FromQuery] int month, [FromQuery] int year)
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
             if (string.IsNullOrEmpty(userId))
             {
                 return Unauthorized();
             }
-            var movements = await _movementsService.GetDashboardMovements(Convert.ToInt32(userId));
+            var movements = await _movementsService
+                .GetDashboardMovements(Convert.ToInt32(userId), month, year);
             return movements is not null ? Ok(movements) : NotFound();
         }
 
