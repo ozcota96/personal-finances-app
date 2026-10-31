@@ -18,9 +18,9 @@ namespace core_api.Services
             _accountRepository = accountRepository;
         }
 
-        public async Task<IList<GetMovementDto>> GetDashboardMovements(int userId)
+        public async Task<IList<GetMovementDto>> GetDashboardMovements(int userId, int month, int year)
         {
-            var movements = await _movementRepository.GetUserMovementsAsync(userId);
+            var movements = await _movementRepository.GetUserMovementsAsync(userId, month, year);
             return [.. movements.Select(m => new GetMovementDto
             {
                 Id = m.Id,

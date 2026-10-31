@@ -7,7 +7,7 @@ namespace core_api.Services.Interfaces
     public interface IUsersService
     {
         Task<GetUserDto?> GetUserById(int id);
-        Task<User?> Login(string email, string password);
+        Task<GetUserDto?> Login(string email, string password);
         Task<User?> CreateUser(CreateUserDto userDto);
         Task<bool> UpdateUser(UpdateUserDto userDto, int id, int userId);
     }

@@ -7,7 +7,7 @@ namespace core_api.Services.Interfaces
     public interface IMovementsService
     {
         Task<Movement?> CreateMovement(CreateMovementDto movementDto);
-        Task<IList<GetMovementDto>> GetDashboardMovements(int userId);
+        Task<IList<GetMovementDto>> GetDashboardMovements(int userId, int month, int year);
         Task<bool> UpdateMovement(int movementId, UpdateMovementDto movementDto, int userId);
         Task<bool> DeleteMovement(int movementId, int userId);
     }
